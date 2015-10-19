@@ -1,21 +1,29 @@
-var animatePoints = function() {
-                    
-    var points = document.getElementsByClassName('point');
-                    
-    var revealPoint = function(reveal) {
-        points[reveal].style.opacity = 1;
-        points[reveal].style.transform = "scaleX(1) translateY(0)";
-        points[reveal].style.msTransform = "scaleX(1) translateY(0)";
-        points[reveal].style.WebkitTransform = "scaleX(1) translateY(0)";
-        points[reveal].style.border = "2px solid pink";
-        points[reveal].style.msBorder = "2px solid pink";
-        points[reveal].style.WebkitBorder = "2px solid pink";
-    };
-        for(var i = 0; i < points.length; i++) {
-            revealPoint(i);
+var pointsArray = document.getElementsByClassName('point');
+
+var revealPoint = function(point) {
+        point.style.opacity = 1;
+        point.style.transform = "scaleX(1) translateY(0)";
+        point.style.msTransform = "scaleX(1) translateY(0)";
+        point.style.WebkitTransform = "scaleX(1) translateY(0)";
     };
 
+var animatePoints = function(points) {                    
+    forEach(points, revealPoint);
 };
+
+window.onload = function() {
+      if (window.innerHeight > 950) {
+         animatePoints(pointsArray);
+     }
+    var sellingPoints = document.getElementsByClassName('selling-points')[0];
+    var scrollDistance = sellingPoints.getBoundingClientRect().top - window.innerHeight + 200;
+    
+    window.addEventListener('scroll', function(event) {
+       if (document.body.scrollTop >= scrollDistance) {
+            animatePoints(pointsArray);    
+       }
+});
+}
     /* var revealSecondPoint = function() {
         points[1].style.opacity = 1;
         points[1].style.transform = "scaleX(1) translateY(0)";
@@ -24,6 +32,9 @@ var animatePoints = function() {
         points[1].style.border = "2px solid pink";
         points[1].style.msBorder = "2px solid pink";
         points[1].style.WebkitBorder = "2px solid pink";
+        points[reveal].style.border = "2px solid pink";
+        points[reveal].style.msBorder = "2px solid pink";
+        points[reveal].style.WebkitBorder = "2px solid pink";
     };
                     
      var revealThirdPoint = function() {
