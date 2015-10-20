@@ -15,7 +15,7 @@ window.onload = function() {
       if (window.innerHeight > 950) {
          animatePoints(pointsArray);
      }
-    var sellingPoints = document.getElementsByClassName('selling-points')[0];
+    var sellingPoints = document.getElementsByClassName('selling-points')[0];//sellingPoints is an array, so we need bracket to choose the first index.
     var scrollDistance = sellingPoints.getBoundingClientRect().top - window.innerHeight + 200;
     
     window.addEventListener('scroll', function(event) {
