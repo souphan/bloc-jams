@@ -55,18 +55,18 @@ var createSongRow = function(songNumber, songName, songLength) {
     var $row = $(template);
     
     var clickHandler = function() {
-        var dataSong = $(this).attr('data-song-number');
+        var musicSong = $(this).attr('data-song-number');
 
 	    if (songPlayingNow !== null) {
 		  // Revert to song number for currently playing song because user started playing new song.
             var currentlyPlayingTable = $('.song-item-number[data-song-number="' + songPlayingNow + '"]');
 		    currentlyPlayingTable.html(songPlayingNow);
 	}
-	    if (songPlayingNow !== dataSong) {
+	    if (songPlayingNow !== musicSong) {
 		      // Switch from Play -> Pause button to indicate new song is playing.
             $(this).html(pauseButtonTemplate);
-		    songPlayingNow = dataSong;
-	}   else if (songPlayingNow === dataSong) {
+		    songPlayingNow = musicSong;
+	}   else if (songPlayingNow === musicSong) {
 		// Switch from Pause -> Play button to pause currently playing song.
             $(this).html(playButtonTemplate);
             songPlayingNow = null;
@@ -77,7 +77,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         var numberItem = $(this).find('.song-item-number');
         var dataSong = numberItem.attr('data-song-number');
 
-        if (dataSong !== currentlyPlayingSong) {
+        if (dataSong !== songPlayingNow) {
             numberItem.html(playButtonTemplate);
         }
     };
@@ -86,7 +86,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         var numberItem = $(this).find('.song-item-number');
         var dataSong = numberItem.attr('data-song-number');
 
-        if (dataSong !== currentlyPlayingSong) {
+        if (dataSong !== songPlayingNow) {
             numberItem.html(dataSong);
         }
     };
@@ -124,7 +124,7 @@ var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 
 // Store state of playing songs
-var currentlyPlayingSong = null;
+var songPlayingNow = null;
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
