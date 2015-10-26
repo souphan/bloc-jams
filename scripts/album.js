@@ -52,7 +52,7 @@ var createSongRow = function(songNumber, songName, songLength) {
      + '</tr>'
      ;
     
-    var row = $(template);
+    var $row = $(template);
     
     var clickHandler = function() {
         var dataSong = $(this).attr('data-song-number');
@@ -140,7 +140,7 @@ $(document).ready(function() {
         }
 });
 
-};
+});
 
 /*
 window.onload = function() 
