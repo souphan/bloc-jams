@@ -52,7 +52,48 @@ var createSongRow = function(songNumber, songName, songLength) {
      + '</tr>'
      ;
     
-    return $(template);
+    var row = $(template);
+    
+    var clickHandler = function() {
+        var dataSong = $(this).attr('data-song-number');
+
+	    if (songPlayingNow !== null) {
+		  // Revert to song number for currently playing song because user started playing new song.
+            var currentlyPlayingTable = $('.song-item-number[data-song-number="' + songPlayingNow + '"]');
+		    currentlyPlayingTable.html(songPlayingNow);
+	}
+	    if (songPlayingNow !== dataSong) {
+		      // Switch from Play -> Pause button to indicate new song is playing.
+            $(this).html(pauseButtonTemplate);
+		    songPlayingNow = dataSong;
+	}   else if (songPlayingNow === dataSong) {
+		// Switch from Pause -> Play button to pause currently playing song.
+            $(this).html(playButtonTemplate);
+            songPlayingNow = null;
+	}
+};
+                
+    var onHover = function(event) {
+        var numberItem = $(this).find('.song-item-number');
+        var dataSong = numberItem.attr('data-song-number');
+
+        if (dataSong !== currentlyPlayingSong) {
+            numberItem.html(playButtonTemplate);
+        }
+    };
+                                    
+    var offHover = function(event) {
+        var numberItem = $(this).find('.song-item-number');
+        var dataSong = numberItem.attr('data-song-number');
+
+        if (dataSong !== currentlyPlayingSong) {
+            numberItem.html(dataSong);
+        }
+    };
+
+    $row.find('.song-item-number').click(clickHandler);
+    $row.hover(onHover, offHover);
+    return $row;
 };
 
     var $albumTitle = $('.album-view-title');
@@ -76,7 +117,65 @@ var setCurrentAlbum = function(album) {
         $albumSongList.append($newRow);
     }
 };
-/* var albumTitle = document.getElementsByClassName('album-view-title')[0];
+
+//This is the album button template
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+//This is the pause button template
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+
+// Store state of playing songs
+var currentlyPlayingSong = null;
+
+$(document).ready(function() {
+    setCurrentAlbum(albumPicasso);
+
+    
+    var albums = [albumPicasso, albumMarconi, albumTiesto];
+    var index = 1;
+    albumImage.addEventListener('click', function(event){
+        setCurrentAlbum(albums[index]);
+        index ++;
+        if (index == albums.length) {
+            index = 0;
+        }
+});
+
+};
+
+/*
+window.onload = function() 
+
+  songListContainer.addEventListener('mouseover', function(event) {
+       
+        //console.log(event.target);
+        //Only target individual song rows when we hover over the event delegation
+        if (event.target.parentElement.className === 'album-view-song-item') {
+            //Change the content from the number to the play button's HTML
+            var songItem = getSongItem(event.target);
+
+            if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
+                songItem.innerHTML = playButtonTemplate;        
+            }
+        }
+     });
+
+for (i = 0; i < songRows.length; i++) {
+
+songRows[i].addEventListener('mouseleave', function(event) {
+            //Revert the content back to the number
+            // Selects first child element, which is the song-item-number element
+            //we've cached the song item that we're leaving in a variable. Referencing getSongItem() repeatedly causes multiple queries that can hinder performance
+            var songItem = getSongItem(event.target);
+            var songItemNumber = songItem.getAttribute('data-song-number');
+            //we've added the conditional that checks that the item the mouse is leaving is not the current song, and we only change the content if it isn't
+            if (songItemNumber !== currentlyPlayingSong) {
+                 songItem.innerHTML = songItemNumber;
+             }
+
+        });
+        
+
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
     var albumImage = document.getElementsByClassName('album-cover-art')[0];
@@ -92,11 +191,39 @@ var setCurrentAlbum = function(album) {
     
     albumSongList.innerHTML = '';
     */
-    /*for (i = 0; i < album.songs.length; i++) {
+                  
+                  
+    /*
+    var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+var songRows = document.getElementsByClassName('album-view-song-item');
+
+    
+    for (i = 0; i < album.songs.length; i++) {
         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].name, album.songs[i].length);
     }
 };*/
 //findParentByClassName() function that keeps traversing the DOM upward until a parent with a specified class name is found.
+
+/* var findParentByClassName = function(parent, targetClass){
+    while ((parent = parent.parentElement) && !parent.classList.contains(targetClass));
+    return parent;
+}
+
+   for (i = 0; i < songRows.length; i++) {
+         songRows[i].addEventListener('mouseleave', function(event) {
+            //Revert the content back to the number
+            // Selects first child element, which is the song-item-number element
+            //this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+            //we've cached the song item that we're leaving in a variable. Referencing getSongItem() repeatedly causes multiple queries that can hinder performance
+            var songItem = getSongItem(event.target);
+            var songItemNumber = songItem.getAttribute('data-song-number');
+            //we've added the conditional that checks that the item the mouse is leaving is not the current song, and we only change the content if it isn't
+            if (songItemNumber !== currentlyPlayingSong) {
+                 songItem.innerHTML = songItemNumber;
+             }
+
+        });
+        
 
 var findParentByClassName = function(element, targetClass) {
     var currentParent = element.parentElement;
@@ -115,11 +242,7 @@ var findParentByClassName = function(element, targetClass) {
     }
 };
 
-/* var findParentByClassName = function(parent, targetClass){
-    while ((parent = parent.parentElement) && !parent.classList.contains(targetClass));
-    return parent;
-}
-*/
+
 var getSongItem = function(element) {
     switch (element.className) {
         case 'album-song-button':
@@ -136,7 +259,7 @@ var getSongItem = function(element) {
         default:
             return;
     }  
-};
+};        
 
 var clickHandler = function(targetElement) {
     
@@ -158,65 +281,14 @@ var clickHandler = function(targetElement) {
      }
 };
 
-var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
-var songRows = document.getElementsByClassName('album-view-song-item');
-
-//This is the album button template
-var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
-//This is the pause button template
-var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
-
-// Store state of playing songs
-var currentlyPlayingSong = null;
-
-window.onload = function() {
-    setCurrentAlbum(albumPicasso);
-
-    songListContainer.addEventListener('mouseover', function(event) {
-       
-        //console.log(event.target);
-        //Only target individual song rows when we hover over the event delegation
-        if (event.target.parentElement.className === 'album-view-song-item') {
-            //Change the content from the number to the play button's HTML
-            var songItem = getSongItem(event.target);
-
-            if (songItem.getAttribute('data-song-number') !== currentlyPlayingSong) {
-                songItem.innerHTML = playButtonTemplate;        
-            }
-        }
-     });
-    for (i = 0; i < songRows.length; i++) {
-         songRows[i].addEventListener('mouseleave', function(event) {
-            //Revert the content back to the number
-            // Selects first child element, which is the song-item-number element
-            //this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
-            //we've cached the song item that we're leaving in a variable. Referencing getSongItem() repeatedly causes multiple queries that can hinder performance
-            var songItem = getSongItem(event.target);
-            var songItemNumber = songItem.getAttribute('data-song-number');
-            //we've added the conditional that checks that the item the mouse is leaving is not the current song, and we only change the content if it isn't
-            if (songItemNumber !== currentlyPlayingSong) {
-                 songItem.innerHTML = songItemNumber;
-             }
-
-        });
-        
+ for (i = 0; i < songRows.length; i++) {
+         
         songRows[i].addEventListener('click', function(event) {
             // Event handler call
             clickHandler(event.target);
-        })
+        });
     }
-    var albums = [albumPicasso, albumMarconi, albumTiesto];
-    var index = 1;
-    albumImage.addEventListener('click', function(event){
-        setCurrentAlbum(albums[index]);
-        index ++;
-        if (index == albums.length) {
-            index = 0;
-        }
-});
 
-};
+*/
 
-
-
-
+                  
