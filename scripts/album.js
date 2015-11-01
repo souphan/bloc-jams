@@ -122,6 +122,7 @@ var setCurrentAlbum = function(album) {
         $albumSongList.append($newRow);
     }
 };
+
    
 var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
@@ -213,6 +214,19 @@ var previousSong = function() {
     
 };
 
+var togglePlayFromPlayerBar = function() {
+    var $currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+    if (currentSoundFile.isPaused()) {
+        $currentlyPlayingCell.html(pauseButtonTemplate);
+        $(this).html(playerBarPauseButton);
+        currentSoundFile.play();
+    } else if (currentSoundFile) {
+        $currentlyPlayingCell.html(playButtonTemplate);
+        $(this).html(playerBarPlayButton);
+        currentSoundFile.pause();
+    }
+};
+
 //This is the album button template
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 //This is the pause button template
@@ -231,6 +245,7 @@ var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
+var $playPauseButton = $('.main-controls .play-pause');
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
