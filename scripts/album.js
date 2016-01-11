@@ -1,7 +1,6 @@
 var setSong = function(songNumber) {
     if (currentSoundFile) {
          currentSoundFile.stop();
-<<<<<<< HEAD
      }
     
     currentlyPlayingSongNumber = parseInt(songNumber);
@@ -26,39 +25,11 @@ var seek = function(time) {
          currentSoundFile.setVolume(volume);
      }
  };
-=======
-     };
     
-    currentlyPlayingSongNumber = parseInt(songNumber);
-    currentSongFromAlbum = currentAlbum.songs[songNumber -1];
-    
-        currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
-         formats: [ 'mp3' ],
-         preload: true
-     });
-    
-    setVolume(currentVolume);
-};
->>>>>>> assignment-34-jan2016
 
-var seek = function(time) {
-    if (currentSoundFile) {
-        currentSoundFile.setTime(time);
-    }
-}
- 
-var setVolume = function(volume) {
-     if (currentSoundFile) {
-         currentSoundFile.setVolume(volume);
-     }
- };
 
 var getSongNumberCell = function(number) {
-<<<<<<< HEAD
     return $('.song-item-number[data-song-number]="' + number + '"]');
-=======
-    return $('.song-item-number[data-song-number="' + number + '"]');
->>>>>>> assignment-34-jan2016
 };
 
 var createSongRow = function(songNumber, songName, songLength) {
@@ -85,12 +56,8 @@ var createSongRow = function(songNumber, songName, songLength) {
 
         if (currentlyPlayingSongNumber !== null) {
          // Revert to song number for currently playing song because user started playing new song.
-              var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-<<<<<<< HEAD
-            
+              var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);            
               currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
-=======
->>>>>>> assignment-34-jan2016
               currentlyPlayingCell.html(currentlyPlayingSongNumber);
      }
 
@@ -106,12 +73,9 @@ var createSongRow = function(songNumber, songName, songLength) {
          $volumeThumb.css({left: currentVolume + '%'})
             
          $(this).html(pauseButtonTemplate);
-<<<<<<< HEAD
-=======
          setSong(songNumber);
          currentSoundFile.play();
          updateSeekBarWhileSongPlays()
->>>>>>> assignment-34-jan2016
          currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
          var $volumeFill = $('.volume .fill');
          var $volumeThumb = $('.volume .thumb');
@@ -122,7 +86,6 @@ var createSongRow = function(songNumber, songName, songLength) {
         else if (currentlyPlayingSongNumber === songNumber) {
          // Switch from Pause -> Play button to pause currently playing song.
          if (currentSoundFile.isPaused()) {
-<<<<<<< HEAD
             $(this).html(playButtonTemplate);
             $('.main-controls .play-pause').html(playerBarPauseButton);
              currentSoundFile.play();
@@ -132,7 +95,6 @@ var createSongRow = function(songNumber, songName, songLength) {
              currentSoundFile.pause();
          }
 
-=======
             $(this).html(pauseButtonTemplate);
             $('.main-controls .play-pause').html(playerBarPauseButton);
             currentSoundFile.play();
@@ -141,7 +103,6 @@ var createSongRow = function(songNumber, songName, songLength) {
                 $('.main-controls .play-pause').html(playerBarPlayButton);
                 currentSoundFile.pause();   
             }
->>>>>>> assignment-34-jan2016
      }
 
  };
@@ -197,21 +158,15 @@ var setCurrentAlbum = function(album) {
     }
 };
 
-<<<<<<< HEAD
-var setCurrentTimeInPlayerBar = function (currentTime) {
-=======
+
 var setCurrentTimeInPlayerBar = function(currentTime) {
->>>>>>> assignment-34-jan2016
     var $currentTimeElement = $('.seek-control .current-time');
     $currentTimeElement.text(currentTime);
 };
 
 var setTotalTimeInPlayerBar = function(totalTime) {
     var $totalTimeElement = $('.seek-control .total-time');
-<<<<<<< HEAD
     $totalTimeElement.text(totalTime);
-=======
->>>>>>> assignment-34-jan2016
 };
 
 var filterTimeCode = function(timeInSeconds) {
@@ -223,11 +178,7 @@ var filterTimeCode = function(timeInSeconds) {
     var output = minutes + ':';
     
     if (remainingSeconds < 10) {
-<<<<<<< HEAD
         output += '0';
-=======
-         output += '0';
->>>>>>> assignment-34-jan2016
     }
     
     output += remainingSeconds;
@@ -236,7 +187,6 @@ var filterTimeCode = function(timeInSeconds) {
 };
 
 var updateSeekBarWhileSongPlays = function() {
-<<<<<<< HEAD
     if (currentSoundFile) {
         //bind timeupdate event to currentSoundFile
         currentSoundFile.bind('timeupdate', function(event) {
@@ -306,7 +256,6 @@ var setupSeekBars = function() {
  });
 };
 
-=======
      if (currentSoundFile) {
          currentSoundFile.bind('timeupdate', function(event) {
              var currentTime = this.getTime();
@@ -329,8 +278,7 @@ var setupSeekBars = function() {
     $seekBar.find('.fill').width(percentageString);
     $seekBar.find('.thumb').css({left: percentageString});
  };
->>>>>>> assignment-34-jan2016
-   
+
 var setupSeekBars = function() {
      var $seekBars = $('.player-bar .seek-bar');
  
@@ -421,11 +369,8 @@ var nextSong = function() {
     // Set a new current song
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
-<<<<<<< HEAD
-=======
     updateSeekBarWhileSongPlays()
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
->>>>>>> assignment-34-jan2016
     updatePlayerBarSong();
 
     // Update the Player Bar information
@@ -462,13 +407,9 @@ var previousSong = function() {
     // Set a new current song
     setSong(currentSongIndex + 1);
     currentSoundFile.play();
-<<<<<<< HEAD
-    updatePlayerBarSong();
-=======
     updateSeekBarWhileSongPlays()
     updatePlayerBarSong();
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
->>>>>>> assignment-34-jan2016
 
     // Update the Player Bar information
     $('.currently-playing .song-name').text(currentSongFromAlbum.name);
@@ -492,11 +433,7 @@ var togglePlayFromPlayerBar = function() {
         $(this).html(playerBarPauseButton);
         currentSoundFile.play();
     } else if (currentSoundFile) {
-<<<<<<< HEAD
-        $currentlyPlayingCell.html(playButtonTemplate);
-=======
         $currentlyPlayingCell.html(pauseButtonTemplate);
->>>>>>> assignment-34-jan2016
         $(this).html(playerBarPlayButton);
         currentSoundFile.pause();
     }
